@@ -1,0 +1,93 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+
+-- LocalScript - UI de Admin/Mod Ranker
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+
+local SetRank = ReplicatedStorage:FindFirstChild("SetRank")
+if not SetRank then
+	SetRank = Instance.new("RemoteEvent")
+	SetRank.Name = "SetRank"
+	SetRank.Parent = ReplicatedStorage
+end
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "RankerUI"
+screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 250, 0, 180)
+mainFrame.Position = UDim2.new(0, 100, 0, 100)
+mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+mainFrame.Active = true
+mainFrame.Draggable = true
+mainFrame.Visible = true
+mainFrame.Parent = screenGui
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.Text = "CRIADO POR coroadinho_37203"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+title.Parent = mainFrame
+
+local adminBtn = Instance.new("TextButton")
+adminBtn.Size = UDim2.new(0.8, 0, 0, 40)
+adminBtn.Position = UDim2.new(0.1, 0, 0, 50)
+adminBtn.Text = "Admin Ranker"
+adminBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+adminBtn.TextColor3 = Color3.new(1, 1, 1)
+adminBtn.Parent = mainFrame
+
+adminBtn.MouseButton1Click:Connect(function()
+	SetRank:FireServer("Admin")
+end)
+
+local modBtn = Instance.new("TextButton")
+modBtn.Size = UDim2.new(0.8, 0, 0, 40)
+modBtn.Position = UDim2.new(0.1, 0, 0, 100)
+modBtn.Text = "Mod Ranker"
+modBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 150)
+modBtn.TextColor3 = Color3.new(1, 1, 1)
+modBtn.Parent = mainFrame
+
+modBtn.MouseButton1Click:Connect(function()
+	SetRank:FireServer("Mod")
+end)
+
+local toggleBtn = Instance.new("TextButton")
+toggleBtn.Size = UDim2.new(0, 60, 0, 30)
+toggleBtn.Position = UDim2.new(0, 0, 0, 0)
+toggleBtn.Text = "Menu"
+toggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+toggleBtn.TextColor3 = Color3.new(1, 1, 1)
+toggleBtn.Parent = screenGui
+
+toggleBtn.MouseButton1Click:Connect(function()
+	mainFrame.Visible = not mainFrame.Visible
+end)
+
+-- Script no servidor (em um Script separado):
+--[=[
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local SetRank = ReplicatedStorage:FindFirstChild("SetRank")
+if not SetRank then
+	SetRank = Instance.new("RemoteEvent")
+	SetRank.Name = "SetRank"
+	SetRank.Parent = ReplicatedStorage
+end
+
+SetRank.OnServerEvent:Connect(function(player, rank)
+	if rank == "Admin" then
+		print(player.Name .. " recebeu admin.")
+		-- Aplique permissões admin aqui
+	elseif rank == "Mod" then
+		print(player.Name .. " recebeu moderador.")
+		-- Aplique permissões de moderador aqui
+	end
+end)
+]=]
